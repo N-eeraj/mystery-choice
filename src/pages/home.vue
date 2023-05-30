@@ -1,20 +1,13 @@
 <script setup>
-import { useRouter } from 'vue-router';
-
-const router = useRouter()
-
-const createChoices = () => {
-    router.push('/create')
-}
+import Decorator from '@components/home/Decorator.vue'
+import Title from '@components/home/Title.vue'
+import Button from '@components/home/Button.vue'
 </script>
 
 <template>
-    <h1 class="text-sky-500 text-7xl">
-        Home
-    </h1>
-    <button
-        class="bg-red-500"
-        @click="createChoices">
-        Create
-    </button>
+    <div>
+        <Decorator />
+        <Title />
+        <Button />
+    </div>
 </template>
