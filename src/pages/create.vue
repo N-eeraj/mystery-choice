@@ -12,6 +12,7 @@ const choiceGroups = reactive([])
 
 const canAddChoiceGroup = computed(() => choiceGroups.length < maxChoiceGroups)
 const canRemoveGroup = computed(() => choiceGroups.length > 1)
+const getNewColor = computed(() => choiceGroups.length % 2 ? 'pink' : 'blue')
 
 const getNewChoice = () => {
     return {
@@ -30,6 +31,8 @@ const addNewChoiceGroup = () => {
     })
 }
 
+const getColor = index => index % 2 ? 'pink' : 'blue'
+
 const addChoice = index => choiceGroups[index].choices.push(getNewChoice())
 
 const removeChoice = (index, choiceIndex) => choiceGroups[index].choices.splice(choiceIndex, 1)
@@ -38,20 +41,18 @@ const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
 const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
 
-const getColor = index => index % 2 ? 'pink' : 'blue'
-
 onMounted(() => {
     addNewChoiceGroup()
 })
 </script>
 
 <template>
-    <div class="flex flex-col min-h-screen p-3 gap-5">
+    <div class="flex flex-col items-center min-h-screen p-3 gap-5">
         <h1 class="w-full text-pink text-3xl text-center md:text-left font-semibold">
             Add Choices
         </h1>
 
-        <div>
+        <div class="w-full">
             <ChoiceGroup
                 v-for="({id, choices}, index) in choiceGroups"
                 :choices="choices"
@@ -63,10 +64,11 @@ onMounted(() => {
                 @remove-choice="choiceIndex => removeChoice(index, choiceIndex)"
                 @remove-choice-group="removeChoiceGroup(index)"
                 @update-choice="value => updateChoice(index, value)" />
+            </div>
 
             <NewChoiceGroup
                 v-if="canAddChoiceGroup"
+                :theme="getNewColor"
                 @click="addNewChoiceGroup" />
-        </div>
     </div>
 </template>
