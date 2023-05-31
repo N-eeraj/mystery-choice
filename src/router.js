@@ -3,11 +3,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 import home from '@pages/home.vue'
 import create from '@pages/create.vue'
 import choose from '@pages/choose.vue'
-
-console.log(process.env.NODE_ENV)
+import pageNotFound from '@pages/page-not-found.vue'
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
@@ -23,6 +22,11 @@ const router = createRouter({
             path: '/choose',
             name: 'choose',
             component: choose
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'page-not-found',
+            component: pageNotFound
         }
     ]
 })
