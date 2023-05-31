@@ -45,7 +45,7 @@ const updateChoice = (index, value) => emit('update-choice', {index, value})
 
 <template>
     <div
-        class="relative flex flex-col gap-y-3 p-3 border-2 border-dashed odd:border-blue even:border-pink"
+        class="relative flex flex-col md:flex-row gap-3 p-3"
         :class="{'pt-10': canRemoveGroup}">
         <Choice
             v-for="({id, text}, index) in choices"
@@ -58,6 +58,7 @@ const updateChoice = (index, value) => emit('update-choice', {index, value})
 
         <NewChoice
             v-if="canAddChoice"
+            :theme="theme"
             @click="addChoice" />
 
         <Remove

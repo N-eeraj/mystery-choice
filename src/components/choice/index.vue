@@ -1,5 +1,6 @@
 <script setup>
 import Remove from '@components/Remove.vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     text: {
@@ -28,6 +29,8 @@ const emit = defineEmits([
     'remove-choice'
 ])
 
+const getTheme = computed(() => props.theme === 'pink' ? 'bg-pink' : 'bg-blue')
+
 const updateChoiceText = ({target}) => emit('update-choice', target.value)
 
 const removeChoice = () => emit('remove-choice')
@@ -35,8 +38,8 @@ const removeChoice = () => emit('remove-choice')
 
 <template>
     <div
-        class="relative grid place-items-center w-full aspect-[2] rounded-lg"
-        :class="theme">
+        class="relative grid place-items-center w-full md:w-[24%] aspect-[2] md:h-48 rounded-lg"
+        :class="getTheme">
         <span
             v-if="readOnly"
             class="text-white">
@@ -45,7 +48,7 @@ const removeChoice = () => emit('remove-choice')
         <textarea
             v-else
             type="text"
-            class="w-full h-full p-3 bg-transparent text-white outline-none"
+            class="w-full h-full p-3 bg-transparent text-white outline-none resize-none"
             @change="updateChoiceText" />
 
         <Remove

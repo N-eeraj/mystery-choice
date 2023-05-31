@@ -38,7 +38,7 @@ const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
 const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
 
-const getColor = index => index % 2 ? 'bg-pink' : 'bg-blue'
+const getColor = index => index % 2 ? 'pink' : 'blue'
 
 onMounted(() => {
     addNewChoiceGroup()
