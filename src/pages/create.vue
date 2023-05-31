@@ -15,6 +15,10 @@ const canAddChoiceGroup = computed(() => choiceGroups.length < maxChoiceGroups)
 const addNewChoiceGroup = () => {
     choiceGroups.push([null, null])
 }
+
+const addChoice = index => {
+    choiceGroups[index].push(null)
+}
 </script>
 
 <template>
@@ -24,7 +28,11 @@ const addNewChoiceGroup = () => {
         </h1>
 
         <div>
-            <ChoiceGroup v-for="choiceGroup in choiceGroups" />
+            <ChoiceGroup
+                v-for="(choices, index) in choiceGroups"
+                :choices="choices"
+                :key="index"
+                @new-choice="addChoice(index)" />
 
             <NewChoiceGroup
                 v-if="canAddChoiceGroup"
