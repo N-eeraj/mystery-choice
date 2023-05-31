@@ -4,7 +4,8 @@ import { computed } from 'vue'
 import Choice from '@components/choice/index.vue'
 import NewChoice from '@components/choice/new.vue'
 
-const maxChoices = 3
+const minChoices = 2
+const maxChoices = 4
 
 const props = defineProps({
     choices: {
@@ -14,24 +15,34 @@ const props = defineProps({
 })
 
 const emit = defineEmits([
-    'new-choice'
+    'add-choice',
+    'remove-choice',
+    'update-choice'
 ])
 
 const canAddChoice = computed(() => props.choices.length < maxChoices)
 
-const addNewChoice = () => {
-    emit('new-choice')
-}
+const canRemoveChoice = computed(() => props.choices.length > minChoices)
+
+const addChoice = () => emit('add-choice')
+
+const removeChoice = index => emit('remove-choice', index)
+
+const updateChoice = (index, value) => emit('update-choice', {index, value})
 </script>
 
 <template>
     <div>
         <Choice
-            v-for="(choice, index) in choices"
-            :key="index" />
+            v-for="({id, text}, index) in choices"
+            :text="text"
+            :can-remove="canRemoveChoice"
+            :key="id"
+            @update-choice="value => updateChoice(index, value)"
+            @remove-choice="removeChoice(index)" />
 
         <NewChoice
             v-if="canAddChoice"
-            @click="addNewChoice" />
+            @click="addChoice" />
     </div>
 </template>

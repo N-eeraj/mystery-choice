@@ -1,24 +1,45 @@
 <script setup>
-import { computed, reactive } from 'vue'
+import { computed, onMounted, reactive } from 'vue'
 
 import ChoiceGroup from '@components/choice/ChoiceGroup/index.vue'
 import NewChoiceGroup from '@components/choice/ChoiceGroup/new.vue'
 
 const maxChoiceGroups = 5
+let currentGroupIndex = 0
+let currentChoiceIndex = 0
 
-const choiceGroups = reactive([
-    [null, null]
-])
+const choiceGroups = reactive([])
 
 const canAddChoiceGroup = computed(() => choiceGroups.length < maxChoiceGroups)
 
-const addNewChoiceGroup = () => {
-    choiceGroups.push([null, null])
+const getNewChoice = () => {
+    return {
+        id: currentChoiceIndex++,
+        text: null
+    }
 }
 
-const addChoice = index => {
-    choiceGroups[index].push(null)
+const addNewChoiceGroup = () => {
+    choiceGroups.push({
+        id: ++currentGroupIndex,
+        choices: [
+            getNewChoice(),
+            getNewChoice()
+        ]
+    })
 }
+
+const addChoice = index => choiceGroups[index].choices.push(getNewChoice())
+
+const removeChoice = (index, choiceIndex) => {
+    choiceGroups[index].choices.splice(choiceIndex, 1)
+}
+
+const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
+
+onMounted(() => {
+    addNewChoiceGroup()
+})
 </script>
 
 <template>
@@ -29,10 +50,13 @@ const addChoice = index => {
 
         <div>
             <ChoiceGroup
-                v-for="(choices, index) in choiceGroups"
+                v-for="({id, choices}, index) in choiceGroups"
                 :choices="choices"
-                :key="index"
-                @new-choice="addChoice(index)" />
+                :key="id"
+                class="mt-5"
+                @add-choice="addChoice(index)"
+                @remove-choice="choiceIndex => removeChoice(index, choiceIndex)"
+                @update-choice="value => updateChoice(index, value)" />
 
             <NewChoiceGroup
                 v-if="canAddChoiceGroup"
