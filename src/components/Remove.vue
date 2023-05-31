@@ -8,6 +8,7 @@ const handleRemove = () => emit('remove')
 
 <template>
     <button
+        class="aspect-square font-black rounded-full"
         @click="handleRemove">
         &cross;
     </button>

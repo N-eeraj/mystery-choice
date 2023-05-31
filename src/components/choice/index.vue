@@ -7,6 +7,10 @@ const props = defineProps({
         required: false,
         default: null
     },
+    theme: {
+        type: String,
+        required: true
+    },
     readOnly: {
         type: Boolean,
         required: false,
@@ -30,18 +34,23 @@ const removeChoice = () => emit('remove-choice')
 </script>
 
 <template>
-    <div>
-        <span v-if="readOnly">
+    <div
+        class="relative grid place-items-center w-full aspect-[2] rounded-lg"
+        :class="theme">
+        <span
+            v-if="readOnly"
+            class="text-white">
             {{ text }}
         </span>
-        <input
+        <textarea
             v-else
             type="text"
-            class="border border-black"
-            @change="updateChoiceText">
+            class="w-full h-full p-3 bg-transparent text-white outline-none"
+            @change="updateChoiceText" />
 
         <Remove
             v-if="canRemove"
+            class="w-6 absolute top-1 right-1 bg-[#0007] text-white"
             @remove="removeChoice" />
     </div>
 </template>

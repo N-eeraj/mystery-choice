@@ -17,12 +17,17 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
-    }
+    },
+    theme: {
+        type: String,
+        required: true
+    },
 })
 
 const emit = defineEmits([
     'add-choice',
     'remove-choice',
+    'remove-choice-group',
     'update-choice'
 ])
 
@@ -33,14 +38,19 @@ const addChoice = () => emit('add-choice')
 
 const removeChoice = index => emit('remove-choice', index)
 
+const removeChoiceGroup = () => emit('remove-choice-group')
+
 const updateChoice = (index, value) => emit('update-choice', {index, value})
 </script>
 
 <template>
-    <div>
+    <div
+        class="relative flex flex-col gap-y-3 p-3 border-2 border-dashed odd:border-blue even:border-pink"
+        :class="{'pt-10': canRemoveGroup}">
         <Choice
             v-for="({id, text}, index) in choices"
             :text="text"
+            :theme="theme"
             :can-remove="canRemoveChoice"
             :key="id"
             @update-choice="value => updateChoice(index, value)"
@@ -52,6 +62,7 @@ const updateChoice = (index, value) => emit('update-choice', {index, value})
 
         <Remove
             v-if="canRemoveGroup"
-            @remove="removeChoice" />
+            class="w-6 absolute top-2 right-2 bg-[#D00] text-white"
+            @remove="removeChoiceGroup" />
     </div>
 </template>

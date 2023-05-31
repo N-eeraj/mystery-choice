@@ -32,11 +32,13 @@ const addNewChoiceGroup = () => {
 
 const addChoice = index => choiceGroups[index].choices.push(getNewChoice())
 
-const removeChoice = (index, choiceIndex) => {
-    choiceGroups[index].choices.splice(choiceIndex, 1)
-}
+const removeChoice = (index, choiceIndex) => choiceGroups[index].choices.splice(choiceIndex, 1)
+
+const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
 const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
+
+const getColor = index => index % 2 ? 'bg-pink' : 'bg-blue'
 
 onMounted(() => {
     addNewChoiceGroup()
@@ -54,10 +56,12 @@ onMounted(() => {
                 v-for="({id, choices}, index) in choiceGroups"
                 :choices="choices"
                 :can-remove-group="canRemoveGroup"
+                :theme="getColor(index)"
                 :key="id"
                 class="mt-5"
                 @add-choice="addChoice(index)"
                 @remove-choice="choiceIndex => removeChoice(index, choiceIndex)"
+                @remove-choice-group="removeChoiceGroup(index)"
                 @update-choice="value => updateChoice(index, value)" />
 
             <NewChoiceGroup
