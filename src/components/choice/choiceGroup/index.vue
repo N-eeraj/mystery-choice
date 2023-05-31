@@ -3,6 +3,7 @@ import { computed } from 'vue'
 
 import Choice from '@components/choice/index.vue'
 import NewChoice from '@components/choice/new.vue'
+import Remove from '@components/Remove.vue'
 
 const minChoices = 2
 const maxChoices = 4
@@ -11,6 +12,11 @@ const props = defineProps({
     choices: {
         type: Array,
         required: true
+    },
+    canRemoveGroup: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -21,7 +27,6 @@ const emit = defineEmits([
 ])
 
 const canAddChoice = computed(() => props.choices.length < maxChoices)
-
 const canRemoveChoice = computed(() => props.choices.length > minChoices)
 
 const addChoice = () => emit('add-choice')
@@ -44,5 +49,9 @@ const updateChoice = (index, value) => emit('update-choice', {index, value})
         <NewChoice
             v-if="canAddChoice"
             @click="addChoice" />
+
+        <Remove
+            v-if="canRemoveGroup"
+            @remove="removeChoice" />
     </div>
 </template>

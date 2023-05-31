@@ -11,6 +11,7 @@ let currentChoiceIndex = 0
 const choiceGroups = reactive([])
 
 const canAddChoiceGroup = computed(() => choiceGroups.length < maxChoiceGroups)
+const canRemoveGroup = computed(() => choiceGroups.length > 1)
 
 const getNewChoice = () => {
     return {
@@ -52,6 +53,7 @@ onMounted(() => {
             <ChoiceGroup
                 v-for="({id, choices}, index) in choiceGroups"
                 :choices="choices"
+                :can-remove-group="canRemoveGroup"
                 :key="id"
                 class="mt-5"
                 @add-choice="addChoice(index)"

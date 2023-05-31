@@ -1,4 +1,6 @@
 <script setup>
+import Remove from '@components/Remove.vue'
+
 const props = defineProps({
     text: {
         type: String,
@@ -38,10 +40,8 @@ const removeChoice = () => emit('remove-choice')
             class="border border-black"
             @change="updateChoiceText">
 
-        <button
+        <Remove
             v-if="canRemove"
-            @click="removeChoice">
-            remove-choice
-        </button>
+            @remove="removeChoice" />
     </div>
 </template>
