@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import Choice from '@components/choice/index.vue'
-import NewChoice from '@components/choice/new.vue'
+import NewChoice from '@components/choice/New.vue'
 import Remove from '@components/Remove.vue'
 
 const minChoices = 2

@@ -2,7 +2,8 @@
 import { computed, onMounted, reactive } from 'vue'
 
 import ChoiceGroup from '@components/choice/ChoiceGroup/index.vue'
-import NewChoiceGroup from '@components/choice/ChoiceGroup/new.vue'
+import NewChoiceGroup from '@components/choice/ChoiceGroup/New.vue'
+import ShareChoices from '@components/choice/Share.vue'
 
 const maxChoiceGroups = 5
 let currentGroupIndex = 0
@@ -13,6 +14,7 @@ const choiceGroups = reactive([])
 const canAddChoiceGroup = computed(() => choiceGroups.length < maxChoiceGroups)
 const canRemoveGroup = computed(() => choiceGroups.length > 1)
 const getNewColor = computed(() => choiceGroups.length % 2 ? 'pink' : 'blue')
+const getSaveColor = computed(() => choiceGroups.length % 2 ? 'blue' : 'pink')
 
 const getNewChoice = () => {
     return {
@@ -40,6 +42,10 @@ const removeChoice = (index, choiceIndex) => choiceGroups[index].choices.splice(
 const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
 const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
+
+const handleShare = () => {
+    console.log(choiceGroups)
+}
 
 onMounted(() => {
     addNewChoiceGroup()
@@ -70,5 +76,9 @@ onMounted(() => {
                 v-if="canAddChoiceGroup"
                 :theme="getNewColor"
                 @click="addNewChoiceGroup" />
+
+            <ShareChoices
+                :theme="getSaveColor"
+                @share="handleShare" />
     </div>
 </template>
