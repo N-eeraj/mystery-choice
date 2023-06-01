@@ -10,7 +10,7 @@ const route = useRoute()
 
 const choiceGroups = ref([])
 
-const getTheme = index => index % 2 ? 'blue' : 'pink'
+const getTheme = index => index % 2 ? 'pink' : 'blue'
 
 onMounted(() => {
     choiceGroups.value = decode(route.query.choices)

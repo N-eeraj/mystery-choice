@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 import Choice from '@components/choice/index.vue'
-import NewChoice from '@components/choice/New.vue'
+import New from '@components/New.vue'
 import Remove from '@components/Remove.vue'
 
 const minChoices = 2
@@ -77,9 +77,10 @@ const updateChoice = (index, value) => emit('update-choice', {index, value})
                 @update-choice="value => updateChoice(index, value)"
                 @remove-choice="removeChoice(index)" />
                 
-            <NewChoice
+            <New
                 v-if="canAddChoice"
                 :theme="theme"
+                class="w-full md:w-[24%] border-2"
                 @click="addChoice" />
         </div>
     </div>

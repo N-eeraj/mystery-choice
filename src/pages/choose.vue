@@ -19,7 +19,7 @@ const currentChoices = computed(() => {
     return choiceGroups.value[currentChoiceGroup.value].choices
 })
 
-const getTheme = computed(() => currentChoiceGroup.value % 2 ? 'blue' : 'pink')
+const getTheme = computed(() => currentChoiceGroup.value % 2 ? 'pink' : 'blue')
 
 const shareResults = () => {
     const path = 'results'

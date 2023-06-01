@@ -2,7 +2,7 @@
 import { computed, onMounted, reactive } from 'vue'
 
 import ChoiceGroup from '@components/choice/ChoiceGroup/index.vue'
-import NewChoiceGroup from '@components/choice/ChoiceGroup/New.vue'
+import New from '@components/New.vue'
 import ShareChoices from '@components/choice/Share.vue'
 
 import { encode } from '@/composables/query.js'
@@ -97,13 +97,14 @@ onMounted(() => {
                 @update-choice="value => updateChoice(index, value)" />
             </div>
 
-            <NewChoiceGroup
+            <New
                 v-if="canAddChoiceGroup"
                 :theme="getNewColor"
+                class="w-11/12 mt-5 border-4"
                 @click="addNewChoiceGroup" />
 
             <ShareChoices
                 :theme="getSaveColor"
-                @share="validateShare" />
+                @click="validateShare" />
     </div>
 </template>
