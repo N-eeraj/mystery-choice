@@ -22,6 +22,11 @@ const props = defineProps({
         required: false,
         default: false
     },
+    notSelected: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     canRemove: {
         type: Boolean,
         required: false,
@@ -34,7 +39,21 @@ const emit = defineEmits([
     'remove-choice'
 ])
 
-const getTheme = computed(() => props.theme === 'pink' ? 'bg-pink' : 'bg-blue')
+const getTheme = computed(() => {
+    const pinkTheme = 'border-pink'
+    const blueTheme = 'border-blue'
+    let theme = props.theme === 'pink' ? pinkTheme : blueTheme
+    if (!(props.reveal && props.notSelected))
+        theme += props.theme === 'pink' ? ' bg-pink' : ' bg-blue'
+    return theme
+})
+
+const getText = computed(() => {
+    const pinkTheme = 'text-pink'
+    const blueTheme = 'text-blue'
+    const theme = props.theme === 'pink' ? pinkTheme : blueTheme
+    return props.notSelected ? theme : 'text-white'
+})
 
 const updateChoiceText = ({target}) => emit('update-choice', target.value)
 
@@ -43,11 +62,11 @@ const removeChoice = () => emit('remove-choice')
 
 <template>
     <div
-        class="relative grid place-items-center w-full md:w-[24%] aspect-[2] md:h-48 rounded-lg"
+        class="relative grid place-items-center w-full md:w-[24%] aspect-[2] md:h-48 rounded-lg border-2"
         :class="getTheme">
         <span
             v-if="reveal"
-            class="text-white">
+            :class="getText">
             {{ text }}
         </span>
         <textarea
