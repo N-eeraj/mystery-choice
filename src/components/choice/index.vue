@@ -17,6 +17,11 @@ const props = defineProps({
         required: false,
         default: false
     },
+    reveal: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     canRemove: {
         type: Boolean,
         required: false,
@@ -41,12 +46,12 @@ const removeChoice = () => emit('remove-choice')
         class="relative grid place-items-center w-full md:w-[24%] aspect-[2] md:h-48 rounded-lg"
         :class="getTheme">
         <span
-            v-if="readOnly"
+            v-if="reveal"
             class="text-white">
             {{ text }}
         </span>
         <textarea
-            v-else
+            v-else-if="!readOnly"
             :spellcheck="false"
             class="w-full h-full p-3 bg-transparent text-white outline-none resize-none"
             @change="updateChoiceText" />

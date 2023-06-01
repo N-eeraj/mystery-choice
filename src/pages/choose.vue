@@ -15,7 +15,12 @@ const currentChoices = computed(() => {
     return choiceGroups.value[currentChoiceGroup.value].choices
 })
 
-const getTheme = () => currentChoiceGroup.value % 2 ? 'blue' : 'pink'
+const getTheme = computed(() => currentChoiceGroup.value % 2 ? 'blue' : 'pink')
+
+const pickChoice = index => {
+    console.log(currentChoiceGroup.value++)
+    console.log(index)
+}
 
 onMounted(() => {
     choiceGroups.value = JSON.parse(atob(route.query.choices))
@@ -23,14 +28,20 @@ onMounted(() => {
 </script>
 
 <template>
-    <h1 class="text-sky-500 text-7xl">
-        Choose
-    </h1>
+    <div class="flex flex-col items-center max-w-7xl min-h-screen m-auto p-3 gap-5">
+        <h1 class="w-full text-blue text-3xl text-center md:text-left font-semibold">
+            Pick One Card
+        </h1>
 
-    <Choice
-        v-for="({id, text}, index) in currentChoices"
-        :text="text"
-        :theme="getTheme()"
-        read-only
-        :key="id" />
+        <div class="flex flex-col md:flex-row justify-evenly items-center gap-3 flex-1 w-full">
+            <Choice
+                v-for="({id, text}, index) in currentChoices"
+                :text="text"
+                :theme="getTheme"
+                read-only
+                :key="id"
+                class="cursor-pointer"
+                @click="pickChoice(index)" />
+        </div>
+    </div>
 </template>
