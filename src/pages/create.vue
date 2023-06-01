@@ -44,10 +44,44 @@ const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
 const updateChoiceEvent = (index, value) => choiceGroups[index].event = value
 
-const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
+const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index].choices[choiceIndex].text = value
 
-const handleShare = () => {
-    console.log(choiceGroups)
+const handleCopyLink = url => {
+    const dummy = document.createElement('textarea')
+    document.body.appendChild(dummy)
+    dummy.value = url
+    dummy.select()
+    document.execCommand('copy')
+    document.body.removeChild(dummy)
+    alert('Copied Link')
+}
+
+const handleShare = async () => {
+    const query = btoa(JSON.stringify(choiceGroups))
+    const url = `${window.location.host}${import.meta.env.BASE_URL}choose?choices=${query}`
+    if (navigator.canShare) {
+        const shareData = {
+            title: 'Mystery Choice',
+            text: 'Hey buddy, check out these mystery choices that I made for you',
+            url
+        }
+        try {
+            await navigator.share(shareData)
+        }
+        catch {
+            handleCopyLink(url)
+        }
+    }
+    else
+        handleCopyLink(url)
+}
+
+const validateShare = () => {
+    const isValid = choiceGroups.every(({choices}) => choices.every(({text}) => text))
+    if (isValid)
+        handleShare()
+    else
+        alert('Please add some text to all choices')
 }
 
 onMounted(() => {
@@ -84,6 +118,6 @@ onMounted(() => {
 
             <ShareChoices
                 :theme="getSaveColor"
-                @share="handleShare" />
+                @share="validateShare" />
     </div>
 </template>
