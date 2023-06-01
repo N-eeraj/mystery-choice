@@ -5,11 +5,13 @@ import { useRoute } from 'vue-router'
 import Choice from '@components/choice/index.vue'
 
 import { encode, decode } from '@/composables/query'
+import { shareLink } from '@/composables/share.js'
 
 const route = useRoute()
 
 const choiceGroups = ref([])
 const currentChoiceGroup = ref(0)
+const completed = ref(false)
 
 const currentChoices = computed(() => {
     if (!choiceGroups.value.length)
@@ -19,11 +21,25 @@ const currentChoices = computed(() => {
 
 const getTheme = computed(() => currentChoiceGroup.value % 2 ? 'blue' : 'pink')
 
+const shareResults = () => {
+    const path = 'results'
+    const query = {
+        name: 'choices',
+        value: encode(choiceGroups.value)
+    }
+    const shareData = {
+        title: 'Mystery Choice',
+        text: 'Check out my choices'
+    }
+    shareLink({path, query, shareData})
+}
+
 const pickChoice = index => {
     choiceGroups.value[currentChoiceGroup.value].selected = index
     if (currentChoiceGroup.value < choiceGroups.value.length - 1)
         return currentChoiceGroup.value++
-    encode(choiceGroups.value)
+    completed.value = true
+    shareResults()
 }
 
 onMounted(() => {
@@ -37,7 +53,9 @@ onMounted(() => {
             Pick One Card
         </h1>
 
-        <div class="flex flex-col md:flex-row justify-evenly items-center gap-3 flex-1 w-full">
+        <div
+            v-if="!completed"
+            class="flex flex-col md:flex-row justify-evenly items-center gap-3 flex-1 w-full">
             <Choice
                 v-for="({id, text}, index) in currentChoices"
                 :text="text"

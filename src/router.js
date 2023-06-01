@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import home from '@pages/home.vue'
 import create from '@pages/create.vue'
 import choose from '@pages/choose.vue'
+import results from '@pages/results.vue'
 import pageNotFound from '@pages/page-not-found.vue'
 
 const router = createRouter({
@@ -22,6 +23,11 @@ const router = createRouter({
             path: '/choose',
             name: 'choose',
             component: choose
+        },
+        {
+            path: '/results',
+            name: 'results',
+            component: results
         },
         {
             path: '/:pathMatch(.*)*',
