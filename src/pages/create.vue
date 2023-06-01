@@ -5,6 +5,8 @@ import ChoiceGroup from '@components/choice/ChoiceGroup/index.vue'
 import NewChoiceGroup from '@components/choice/ChoiceGroup/New.vue'
 import ShareChoices from '@components/choice/Share.vue'
 
+import { encode } from '@/composables/query.js'
+
 const maxChoiceGroups = 5
 let currentGroupIndex = 0
 let currentChoiceIndex = 0

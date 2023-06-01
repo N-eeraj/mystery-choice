@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router'
 
 import Choice from '@components/choice/index.vue'
 
+import { encode, decode } from '@/composables/query'
+
 const route = useRoute()
 
 const choiceGroups = ref([])
@@ -18,12 +20,14 @@ const currentChoices = computed(() => {
 const getTheme = computed(() => currentChoiceGroup.value % 2 ? 'blue' : 'pink')
 
 const pickChoice = index => {
-    console.log(currentChoiceGroup.value++)
-    console.log(index)
+    choiceGroups.value[currentChoiceGroup.value].selected = index
+    if (currentChoiceGroup.value < choiceGroups.value.length - 1)
+        return currentChoiceGroup.value++
+    encode(choiceGroups.value)
 }
 
 onMounted(() => {
-    choiceGroups.value = JSON.parse(atob(route.query.choices))
+    choiceGroups.value = decode(route.query.choices)
 })
 </script>
 
@@ -40,7 +44,7 @@ onMounted(() => {
                 :theme="getTheme"
                 read-only
                 :key="id"
-                class="cursor-pointer"
+                class="cursor-pointer hover:animate-pulse"
                 @click="pickChoice(index)" />
         </div>
     </div>
