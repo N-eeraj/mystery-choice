@@ -19,13 +19,14 @@ const getSaveColor = computed(() => choiceGroups.length % 2 ? 'blue' : 'pink')
 const getNewChoice = () => {
     return {
         id: currentChoiceIndex++,
-        text: null
+        text: ''
     }
 }
 
 const addNewChoiceGroup = () => {
     choiceGroups.push({
         id: ++currentGroupIndex,
+        event: '',
         choices: [
             getNewChoice(),
             getNewChoice()
@@ -41,6 +42,8 @@ const removeChoice = (index, choiceIndex) => choiceGroups[index].choices.splice(
 
 const removeChoiceGroup = index => choiceGroups.splice(index, 1)
 
+const updateChoiceEvent = (index, value) => choiceGroups[index].event = value
+
 const updateChoice = (index, {index: choiceIndex, value}) => choiceGroups[index][choiceIndex] = value
 
 const handleShare = () => {
@@ -53,14 +56,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col items-center min-h-screen p-3 gap-5">
+    <div class="flex flex-col items-center max-w-7xl min-h-screen m-auto p-3 gap-5">
         <h1 class="w-full text-pink text-3xl text-center md:text-left font-semibold">
             Add Choices
         </h1>
 
         <div class="w-full">
             <ChoiceGroup
-                v-for="({id, choices}, index) in choiceGroups"
+                v-for="({id, event, choices}, index) in choiceGroups"
+                :event="event"
                 :choices="choices"
                 :can-remove-group="canRemoveGroup"
                 :theme="getColor(index)"
@@ -69,6 +73,7 @@ onMounted(() => {
                 @add-choice="addChoice(index)"
                 @remove-choice="choiceIndex => removeChoice(index, choiceIndex)"
                 @remove-choice-group="removeChoiceGroup(index)"
+                @update-choice-event="value => updateChoiceEvent(index, value)"
                 @update-choice="value => updateChoice(index, value)" />
             </div>
 

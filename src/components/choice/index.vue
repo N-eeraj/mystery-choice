@@ -6,7 +6,7 @@ const props = defineProps({
     text: {
         type: String,
         required: false,
-        default: null
+        default: ''
     },
     theme: {
         type: String,
@@ -47,7 +47,7 @@ const removeChoice = () => emit('remove-choice')
         </span>
         <textarea
             v-else
-            type="text"
+            :spellcheck="false"
             class="w-full h-full p-3 bg-transparent text-white outline-none resize-none"
             @change="updateChoiceText" />
 
