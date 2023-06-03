@@ -1,12 +1,13 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import Choice from '@components/choice/index.vue'
 
 import { decode } from '@/composables/query'
 
 const route = useRoute()
+const router = useRouter()
 
 const choiceGroups = ref([])
 const currentEvent = ref(0)
@@ -19,7 +20,12 @@ const showNext = computed(() => choiceGroups.value.length - 1 !== currentEvent.v
 const nextEvent = () => currentEvent.value++
 
 onMounted(() => {
-    choiceGroups.value = decode(route.query.choices)
+    try {
+        choiceGroups.value = decode(route.query.choices)
+    }
+    catch {
+        router.push('/page-not-found')
+    }
 })
 </script>
 

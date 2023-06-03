@@ -1,6 +1,6 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import Choice from '@components/choice/index.vue'
 
@@ -8,6 +8,7 @@ import { encode, decode } from '@/composables/query'
 import { shareLink } from '@/composables/share.js'
 
 const route = useRoute()
+const router = useRouter()
 
 const choiceGroups = ref([])
 const currentChoiceGroup = ref(0)
@@ -43,7 +44,12 @@ const pickChoice = index => {
 }
 
 onMounted(() => {
-    choiceGroups.value = decode(route.query.choices)
+    try {
+        choiceGroups.value = decode(route.query.choices)
+    }
+    catch {
+        router.push('/page-not-found')
+    }
 })
 </script>
 
