@@ -30,9 +30,13 @@ const router = createRouter({
             component: results
         },
         {
-            path: '/:pathMatch(.*)*',
+            path: '/page-not-found',
             name: 'page-not-found',
             component: pageNotFound
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            redirect: '/page-not-found'
         }
     ]
 })
