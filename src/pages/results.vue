@@ -11,17 +11,33 @@ const router = useRouter()
 
 const choiceGroups = ref([])
 const currentEvent = ref(0)
+const reveal = ref(false)
 
 const getTheme = index => index % 2 ? 'pink' : 'blue'
 
 const currentChoiceGroup = computed(() => choiceGroups.value[currentEvent.value])
-const showNext = computed(() => choiceGroups.value.length - 1 !== currentEvent.value)
+const showNext = computed(() => (choiceGroups.value.length - 1 !== currentEvent.value) && reveal.value)
 
-const nextEvent = () => currentEvent.value++
+const nextEvent = () => {
+    currentEvent.value++
+    reveal.value = false
+    dramaticReveal()
+}
+
+const choiceAnimation = subIndex => {
+    if (!reveal.value)
+        return 'animate-pulse'
+    return subIndex !== currentChoiceGroup.value.selected && 'animate-pulse'
+}
+
+const dramaticReveal = () => setTimeout(() => {
+    reveal.value = true
+}, 5000);
 
 onMounted(() => {
     try {
         choiceGroups.value = decode(route.query.choices)
+        dramaticReveal()
     }
     catch {
         router.push('/page-not-found')
@@ -48,15 +64,15 @@ onMounted(() => {
                     v-for="({id, text}, subIndex) in currentChoiceGroup.choices"
                     :text="text"
                     :theme="getTheme(currentEvent)"
-                    reveal
+                    :reveal="reveal"
                     read-only
                     :not-selected="subIndex !== currentChoiceGroup.selected"
-                    :class="{ 'animate-pulse' : subIndex !== currentChoiceGroup.selected }"
+                    :class="choiceAnimation(subIndex)"
                     :key="id" />
             </div>
 
             <button
-                v-if="showNext"
+                v-show="showNext"
                 class="self-end py-1 px-6 bg-white text-black rounded-3xl border-2 border-black duration-300 hover:bg-black hover:text-white"
                 @click="nextEvent">
                 Next
