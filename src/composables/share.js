@@ -9,7 +9,7 @@ const copyLink = url => {
 }
 
 export const shareLink = async ({path, query, shareData}) => {
-    const url = `${window.location.host}${import.meta.env.BASE_URL}${path}?${query.name}=${query.value}`
+    const url = `${window.location.origin}${import.meta.env.BASE_URL}${path}?${query.name}=${query.value}`
     if (navigator.canShare) {
         try {
             shareData.url = url
